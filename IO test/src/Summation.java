@@ -22,10 +22,12 @@ public class Summation {
       } while (i++ < end);
       break;
     case 3:
-      for (int i = start; i < end; i++) sum += i;
+      for (int i = start; i <= end; i++) sum += i;
       break;
     default:
       System.out.println("Invalid loop type");
+      return;
     }
+    System.out.println("The sum is " + sum);
   }
 }
