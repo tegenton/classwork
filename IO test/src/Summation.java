@@ -9,6 +9,8 @@ public class Summation {
     int end = in.nextInt();
     System.out.print("Loop type (1 for a while loop, 2 for a do...while loop, and 3 for a for loop): ");
     int type = in.nextInt();
+    in.close();
+    
     int sum = 0;
     switch (type) {
     case 1:
