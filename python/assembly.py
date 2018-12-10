@@ -23,7 +23,7 @@ def matchLength(fragments):
     if fragmentA == fragmentB:
         return [len(fragmentA), fragmentA, fragmentB]
     for indexA in range(0, len(fragmentA)):
-        if fragmentA[indexA:] == fragmentB[:len(fragmentA) - indexA]:
+        if fragmentA[indexA:indexA + len(fragmentB)] == fragmentB[:len(fragmentA) - indexA]:
             return [len(fragmentA) - indexA, fragmentA, fragmentB]
     return [0, fragmentA, fragmentB]
 
@@ -35,8 +35,30 @@ def bestMatch(fragments):
             bestPair = currentPair
     return bestPair
 
+def matchFragments(pair):
+    if pair[0] > len(pair[2]):
+        return pair[1]
+    return pair[1][:len(pair[1]) - pair[0]] + pair[2]
+
+def completeSequence(fragments):
+    firstSet = bestMatch(fragments)
+    fragments.remove(firstSet[1])
+    fragments.remove(firstSet[2])
+    sequence = matchFragments(firstSet)
+    while True:
+        if not fragments:
+            return sequence
+        nextMatch = matchLength([sequence, fragments[0]])
+        for fragment in fragments:
+            currentMatch = matchLength([sequence, fragment])
+            if currentMatch[0] > nextMatch[0]:
+               nextMatch = currentMatch
+        fragments.remove(nextMatch[2])
+        sequence = matchFragments(nextMatch)
+
 if __name__ == '__main__':
     fragmentList = []
     fragmentList = getInput()
     fragmentList = filterDNA(fragmentList)
-    print(bestMatch(fragmentList))
+    complete = completeSequence(fragmentList)
+    print("Completed sequence is:", complete)
